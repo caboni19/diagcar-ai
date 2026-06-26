@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — DiagCar AI{% endblock %}
+{% block content %}
+<section class="page-hero" style="padding:40px 0 30px">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+    <div>
+      <p class="eyebrow">DASHBOARD</p>
+      <h1 style="font-size:clamp(22px,3vw,32px)">Welcome back, {{ user.first_name }} 👋</h1>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="/diagnostic" class="btn btn-primary" style="padding:10px 20px">+ New Diagnosis</a>
+      <a href="/profile/update" class="btn btn-light" style="padding:10px 20px">✏️ Update Profile</a>
+    </div>
+  </div>
+</section>
+
+<section class="container" style="padding-bottom:60px">
+
+  <!-- STATS CARDS -->
+  <div id="statsCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:28px">
+    <div class="metric" style="padding:20px;border-radius:20px;text-align:center">
+      <strong id="totalDiag" style="font-size:2rem;color:#fff;display:block">—</strong>
+      <span style="font-size:.82rem;color:#b3c6d6">Total Diagnoses</span>
+    </div>
+    <div class="metric" style="padding:20px;border-radius:20px;text-align:center">
+      <strong id="criticalCount" style="font-size:2rem;color:#ef4444;display:block">—</strong>
+      <span style="font-size:.82rem;color:#b3c6d6">Critical Issues</span>
+    </div>
+    <div class="metric" style="padding:20px;border-radius:20px;text-align:center">
+      <strong id="vehicleHealth" style="font-size:2rem;color:#22c55e;display:block">—</strong>
+      <span style="font-size:.82rem;color:#b3c6d6">Vehicle Health</span>
+    </div>
+    <div class="metric" style="padding:20px;border-radius:20px;text-align:center">
+      <strong id="lastScan" style="font-size:1.1rem;color:#18c8ff;display:block">—</strong>
+      <span style="font-size:.82rem;color:#b3c6d6">Last Scan</span>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px">
+    <div class="metric" style="padding:22px;border-radius:20px">
+      <h3 style="color:#fff;font-size:.95rem;margin-bottom:16px">Faults by Severity</h3>
+      <canvas id="chartSeverity" height="180"></canvas>
+    </div>
+    <div class="metric" style="padding:22px;border-radius:20px">
+      <h3 style="color:#fff;font-size:.95rem;margin-bottom:16px">Top Diagnosed Faults</h3>
+      <canvas id="chartFaults" height="180"></canvas>
+    </div>
+  </div>
+
+  <!-- VEHICLE CARD -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px">
+    <div class="metric" style="padding:22px;border-radius:20px">
+      <h3 style="color:#fff;font-size:.95rem;margin-bottom:14px">🚗 My Vehicle</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        {% for label,val in [
+          ('Brand', user.car_brand or '—'),('Model', user.car_model or '—'),
+          ('Year', user.car_year or '—'),('Fuel', user.fuel_type or '—'),
+          ('Gearbox', user.transmission or '—'),('Mileage', (user.mileage or '—') ~ ' km'),
+        ] %}
+        <div>
+          <div style="font-size:.72rem;color:#7f97b2">{{label}}</div>
+          <div style="font-size:.9rem;color:#fff;font-weight:600">{{val}}</div>
+        </div>
+        {% endfor %}
+      </div>
+      <a href="/profile/update" style="display:inline-block;margin-top:14px;font-size:.8rem;color:#18c8ff">✏️ Edit</a>
+    </div>
+
+    <!-- Subscription status -->
+    <div class="metric" style="padding:22px;border-radius:20px">
+      <h3 style="color:#fff;font-size:.95rem;margin-bottom:14px">💎 Subscription</h3>
+      <div style="background:rgba(245,179,1,.08);border:1px solid rgba(245,179,1,.2);border-radius:14px;padding:14px;margin-bottom:14px">
+        <div style="font-size:.75rem;color:#f5b301;font-weight:800;margin-bottom:4px">FREE PLAN</div>
+        <div id="dashSubUsed" style="font-size:.85rem;color:#b3c6d6">7 diagnostics available</div>
+        <div class="diag-dots" id="dashSubDots" style="margin-top:8px"></div>
+      </div>
+      <button onclick="window.openSubscriptionModal && window.openSubscriptionModal('pro',false)"
+        style="width:100%;padding:12px;background:linear-gradient(135deg,#18c8ff,#0b74ff);
+               border:none;border-radius:12px;color:#fff;font-weight:700;font-size:.88rem;cursor:pointer">
+        🚀 Upgrade to Pro — 590 DA/mo
+      </button>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <h3 style="color:#fff;font-size:1rem;font-weight:700">📋 Recent Diagnostics</h3>
+      <button onclick="clearHistory()"
+        style="font-size:.78rem;background:transparent;border:1px solid rgba(239,68,68,.3);
+               color:#ef4444;border-radius:8px;padding:5px 12px;cursor:pointer">Clear</button>
+    </div>
+    <div id="historyList" class="history"></div>
+  </div>
+</section>
+
+<!-- Subscription modal -->
+{% include 'partials/subscription_modal.html' %}
+
+<!-- Chart.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

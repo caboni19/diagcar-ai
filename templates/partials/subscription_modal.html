@@ -1,0 +1,115 @@
+<!-- ══ SUBSCRIPTION PAYWALL MODAL ══════════════ -->
+<div class="sub-modal-overlay" id="subModalOverlay" role="dialog" aria-modal="true" aria-label="Subscription plans">
+  <div class="sub-modal">
+    <button class="close-modal" id="closeSubModal" aria-label="Close">✕</button>
+
+    <div class="sub-modal-header">
+      <span class="lock-icon">🔒</span>
+      <h2 id="subModalTitle">Upgrade to continue diagnosing</h2>
+      <p id="subModalDesc">You have used all 7 free diagnostics. Choose a plan to unlock unlimited access.</p>
+      <span class="used-up" id="subModalBadge">7 / 7 free diagnostics used</span>
+    </div>
+
+    <div class="modal-plans">
+      <!-- PRO -->
+      <div class="modal-plan popular-modal selected" data-plan="pro">
+        <span class="m-badge">⭐ POPULAR</span>
+        <div class="modal-plan-name">Pro</div>
+        <div class="modal-plan-price"><strong>590</strong><span> DA/mo</span></div>
+        <div class="modal-plan-desc">Best for individual car owners</div>
+        <ul class="modal-plan-feats">
+          <li>Unlimited diagnostics</li>
+          <li>Full OBD-II code library</li>
+          <li>Diagnostic history & PDF</li>
+          <li>Arabic + French + Darija</li>
+          <li>Workshop locator</li>
+        </ul>
+      </div>
+      <!-- PREMIUM -->
+      <div class="modal-plan" data-plan="premium">
+        <div class="modal-plan-name">Premium</div>
+        <div class="modal-plan-price"><strong>990</strong><span> DA/mo</span></div>
+        <div class="modal-plan-desc">For families &amp; garages</div>
+        <ul class="modal-plan-feats">
+          <li>Everything in Pro</li>
+          <li>Up to 3 vehicles</li>
+          <li>Maintenance reminders</li>
+          <li>Priority support 24/7</li>
+        </ul>
+      </div>
+    </div>
+
+    <button class="modal-cta" id="modalSubscribeBtn">🚀 Subscribe Now — Pro (590 DA/mo)</button>
+    <span class="modal-free-link" id="closeModalFree">✕ Maybe later — I'll lose my remaining diagnostics</span>
+  </div>
+</div>
+
+<script>
+// ── Subscription Modal Controller ──────────────
+(function(){
+  const overlay   = document.getElementById('subModalOverlay');
+  const closeBtn  = document.getElementById('closeSubModal');
+  const closeFree = document.getElementById('closeModalFree');
+  const subBtn    = document.getElementById('modalSubscribeBtn');
+  const title     = document.getElementById('subModalTitle');
+  const desc      = document.getElementById('subModalDesc');
+  const badge     = document.getElementById('subModalBadge');
+
+  let selectedPlan = 'pro';
+  const planLabels = {
+    pro:     { name:'Pro',     price:'590 DA/mo' },
+    premium: { name:'Premium', price:'990 DA/mo' }
+  };
+
+  function open(plan, usedUp){
+    selectedPlan = plan || 'pro';
+    // Update header
+    if(usedUp){
+      title.textContent = 'You\'ve reached the free limit 🚫';
+      desc.textContent  = 'You have used all 7 free diagnostics. Subscribe to continue.';
+      badge.style.display = 'inline-block';
+    } else {
+      title.textContent = 'Upgrade your DiagCar plan 💎';
+      desc.textContent  = 'Unlock unlimited diagnostics, full OBD library and more.';
+      badge.style.display = 'none';
+    }
+    // Highlight selected plan card
+    document.querySelectorAll('.modal-plan').forEach(el => {
+      el.classList.toggle('selected', el.dataset.plan === selectedPlan);
+    });
+    const p = planLabels[selectedPlan] || planLabels.pro;
+    subBtn.textContent = `🚀 Subscribe Now — ${p.name} (${p.price})`;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close(){
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Plan card selection
+  document.querySelectorAll('.modal-plan').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.modal-plan').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedPlan = el.dataset.plan;
+      const p = planLabels[selectedPlan] || planLabels.pro;
+      subBtn.textContent = `🚀 Subscribe Now — ${p.name} (${p.price})`;
+    });
+  });
+
+  closeBtn && closeBtn.addEventListener('click', close);
+  closeFree && closeFree.addEventListener('click', close);
+  overlay && overlay.addEventListener('click', e => { if(e.target === overlay) close(); });
+
+  subBtn && subBtn.addEventListener('click', () => {
+    close();
+    const plan = selectedPlan || 'pro';
+    window.location.href = `/payment?plan=${plan.charAt(0).toUpperCase()+plan.slice(1)}`;
+  });
+
+  // Global opener function
+  window.openSubscriptionModal = open;
+})();
+</script>

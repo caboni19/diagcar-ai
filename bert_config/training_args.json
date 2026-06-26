@@ -1,0 +1,19 @@
+{
+  "model_name": "aubmindlab/bert-base-arabertv2",
+  "num_train_epochs": 10,
+  "per_device_train_batch_size": 16,
+  "per_device_eval_batch_size": 32,
+  "learning_rate": 2e-5,
+  "warmup_steps": 100,
+  "weight_decay": 0.01,
+  "max_seq_length": 128,
+  "evaluation_strategy": "epoch",
+  "save_strategy": "best",
+  "metric_for_best_model": "f1",
+  "load_best_model_at_end": true,
+  "seed": 42,
+  "status": "prepared_not_trained",
+  "reason": "Requires GPU (CUDA) with minimum 8GB VRAM. Production system uses TF-IDF+SVM pipeline.",
+  "expected_accuracy": "72-78%",
+  "current_production_accuracy": "97.14% (TF-IDF + LinearSVC on 525 cases)"
+}

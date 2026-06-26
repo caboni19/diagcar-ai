@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" id="rootHtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}DiagCar AI{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/brand/logo-logo.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="site-wrapper dz-site">
+    <header class="topbar dz-topbar">
+      <div class="container nav-container dz-nav-container">
+        <a href="{{ url_for('main.home') }}" class="brand-logo dz-brand-lockup" aria-label="DiagCar AI Home">
+          <img src="{{ url_for('static', filename='img/brand/logo-logo.png') }}" alt="DiagCar AI logo">
+        </a>
+        <nav class="main-nav dz-main-nav" id="mainNav">
+          <a href="{{ url_for('main.home') }}" data-i18n="nav_home">Home</a>
+          <a href="{{ url_for('main.home') }}#pricing" style="color:#18c8ff;font-weight:700">💎 Plans</a>
+          <a href="{{ url_for('main.obd_page') }}">🔍 OBD-II</a>
+          {% if user %}
+          <a href="{{ url_for('main.dashboard') }}" data-i18n="nav_dashboard">Dashboard</a>
+          <a href="{{ url_for('main.diagnostic') }}" data-i18n="nav_diagnostic">Diagnostic Wizard</a>
+          <a class="logout" href="{{ url_for('auth.logout') }}" data-i18n="nav_logout">Logout</a>
+          {% else %}
+          <a href="{{ url_for('auth.login') }}" data-i18n="nav_login">Login</a>
+          <a href="{{ url_for('auth.register') }}" data-i18n="nav_register">Create account</a>
+          {% endif %}
+        </nav>
+        <div class="nav-actions dz-nav-actions">
+          <select id="langSwitcher" aria-label="Language" class="lang-select">
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+            <option value="ar">AR</option>
+          </select>
+          {% if user %}
+          <div class="user-chip"><span>{{ user.first_name[0]|upper }}</span><small>{{ user.first_name }}</small></div>
+          {% else %}
+          <a class="btn btn-primary nav-cta" href="{{ url_for('auth.register') }}" data-i18n="start">Start</a>
+          {% endif %}
+          <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="container flash-wrap">
+          {% for cat,msg in messages %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}
+        </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer dz-footer">
+      <div class="container footer-grid">
+        <div><strong>DiagCar AI</strong><p data-i18n="footer_note">AI vehicle diagnostics built for clear, multilingual and practical decisions.</p></div>
+        <div><span>AI · Darija NLP · OBD · Reports</span></div>
+      </div>
+    </footer>
+  </div>
+  <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const mainNav = document.getElementById('mainNav');
+    if(menuBtn && mainNav){menuBtn.addEventListener('click',()=>mainNav.classList.toggle('open'));}
+  </script>
+  <script src="{{ url_for('static', filename='js/subscription.js') }}"></script>
+</body>
+</html>

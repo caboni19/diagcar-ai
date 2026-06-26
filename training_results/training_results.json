@@ -1,0 +1,851 @@
+{
+  "timestamp": "2026-05-31T02:57:38.228120",
+  "dataset": "/home/claude/diagcar/data/diagcar2026.csv",
+  "n_samples": 525,
+  "n_classes": 10,
+  "classes": [
+    "carburant",
+    "climatisation",
+    "direction",
+    "freinage",
+    "moteur",
+    "refroidissement",
+    "suspension",
+    "transmission",
+    "échappement",
+    "électricité"
+  ],
+  "test_size": 0.2,
+  "best_model": "SVM_LinearSVC",
+  "best_f1": 0.9717,
+  "models": [
+    {
+      "model": "SVM_LinearSVC",
+      "accuracy": 0.9714,
+      "precision": 0.9734,
+      "recall": 0.9714,
+      "f1_score": 0.9717,
+      "cv_mean": 0.9295,
+      "cv_std": 0.0155,
+      "train_time_s": 0.146,
+      "classification_report": {
+        "carburant": {
+          "precision": 1.0,
+          "recall": 0.9230769230769231,
+          "f1-score": 0.96,
+          "support": 13.0
+        },
+        "climatisation": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "direction": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 6.0
+        },
+        "freinage": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "moteur": {
+          "precision": 0.9166666666666666,
+          "recall": 0.9565217391304348,
+          "f1-score": 0.9361702127659575,
+          "support": 23.0
+        },
+        "refroidissement": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 12.0
+        },
+        "suspension": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 8.0
+        },
+        "transmission": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "échappement": {
+          "precision": 0.875,
+          "recall": 1.0,
+          "f1-score": 0.9333333333333333,
+          "support": 7.0
+        },
+        "électricité": {
+          "precision": 1.0,
+          "recall": 0.9333333333333333,
+          "f1-score": 0.9655172413793104,
+          "support": 15.0
+        },
+        "accuracy": 0.9714285714285714,
+        "macro avg": {
+          "precision": 0.9791666666666666,
+          "recall": 0.981293199554069,
+          "f1-score": 0.9795020787478601,
+          "support": 105.0
+        },
+        "weighted avg": {
+          "precision": 0.9734126984126984,
+          "recall": 0.9714285714285714,
+          "f1-score": 0.9716953033108572,
+          "support": 105.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          12,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          6,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          22,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          12,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          14
+        ]
+      ]
+    },
+    {
+      "model": "RandomForest",
+      "accuracy": 0.9524,
+      "precision": 0.9544,
+      "recall": 0.9524,
+      "f1_score": 0.9526,
+      "cv_mean": 0.899,
+      "cv_std": 0.0333,
+      "train_time_s": 0.643,
+      "classification_report": {
+        "carburant": {
+          "precision": 0.9230769230769231,
+          "recall": 0.9230769230769231,
+          "f1-score": 0.9230769230769231,
+          "support": 13.0
+        },
+        "climatisation": {
+          "precision": 1.0,
+          "recall": 0.8571428571428571,
+          "f1-score": 0.9230769230769231,
+          "support": 7.0
+        },
+        "direction": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 6.0
+        },
+        "freinage": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "moteur": {
+          "precision": 0.9166666666666666,
+          "recall": 0.9565217391304348,
+          "f1-score": 0.9361702127659575,
+          "support": 23.0
+        },
+        "refroidissement": {
+          "precision": 1.0,
+          "recall": 0.9166666666666666,
+          "f1-score": 0.9565217391304348,
+          "support": 12.0
+        },
+        "suspension": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 8.0
+        },
+        "transmission": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "échappement": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "électricité": {
+          "precision": 0.875,
+          "recall": 0.9333333333333333,
+          "f1-score": 0.9032258064516129,
+          "support": 15.0
+        },
+        "accuracy": 0.9523809523809523,
+        "macro avg": {
+          "precision": 0.971474358974359,
+          "recall": 0.9586741519350216,
+          "f1-score": 0.9642071604501851,
+          "support": 105.0
+        },
+        "weighted avg": {
+          "precision": 0.9543650793650793,
+          "recall": 0.9523809523809523,
+          "f1-score": 0.9525723935380466,
+          "support": 105.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          12,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          6,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          6,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          22,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          11,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          14
+        ]
+      ]
+    },
+    {
+      "model": "NaiveBayes_MNB",
+      "accuracy": 0.9619,
+      "precision": 0.9654,
+      "recall": 0.9619,
+      "f1_score": 0.9625,
+      "cv_mean": 0.9257,
+      "cv_std": 0.0152,
+      "train_time_s": 0.076,
+      "classification_report": {
+        "carburant": {
+          "precision": 1.0,
+          "recall": 0.9230769230769231,
+          "f1-score": 0.96,
+          "support": 13.0
+        },
+        "climatisation": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "direction": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 6.0
+        },
+        "freinage": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "moteur": {
+          "precision": 0.88,
+          "recall": 0.9565217391304348,
+          "f1-score": 0.9166666666666666,
+          "support": 23.0
+        },
+        "refroidissement": {
+          "precision": 1.0,
+          "recall": 0.9166666666666666,
+          "f1-score": 0.9565217391304348,
+          "support": 12.0
+        },
+        "suspension": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 8.0
+        },
+        "transmission": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "échappement": {
+          "precision": 0.875,
+          "recall": 1.0,
+          "f1-score": 0.9333333333333333,
+          "support": 7.0
+        },
+        "électricité": {
+          "precision": 1.0,
+          "recall": 0.9333333333333333,
+          "f1-score": 0.9655172413793104,
+          "support": 15.0
+        },
+        "accuracy": 0.9619047619047619,
+        "macro avg": {
+          "precision": 0.9754999999999999,
+          "recall": 0.9729598662207358,
+          "f1-score": 0.9732038980509744,
+          "support": 105.0
+        },
+        "weighted avg": {
+          "precision": 0.9653809523809523,
+          "recall": 0.9619047619047619,
+          "f1-score": 0.9624541538754432,
+          "support": 105.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          12,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          6,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          22,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          11,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          14
+        ]
+      ]
+    },
+    {
+      "model": "LogisticRegression",
+      "accuracy": 0.9333,
+      "precision": 0.9489,
+      "recall": 0.9333,
+      "f1_score": 0.9326,
+      "cv_mean": 0.9067,
+      "cv_std": 0.0338,
+      "train_time_s": 0.42,
+      "classification_report": {
+        "carburant": {
+          "precision": 1.0,
+          "recall": 0.9230769230769231,
+          "f1-score": 0.96,
+          "support": 13.0
+        },
+        "climatisation": {
+          "precision": 1.0,
+          "recall": 0.5714285714285714,
+          "f1-score": 0.7272727272727273,
+          "support": 7.0
+        },
+        "direction": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 6.0
+        },
+        "freinage": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "moteur": {
+          "precision": 0.7666666666666667,
+          "recall": 1.0,
+          "f1-score": 0.8679245283018868,
+          "support": 23.0
+        },
+        "refroidissement": {
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1-score": 0.9090909090909091,
+          "support": 12.0
+        },
+        "suspension": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 8.0
+        },
+        "transmission": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "échappement": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7.0
+        },
+        "électricité": {
+          "precision": 1.0,
+          "recall": 0.9333333333333333,
+          "f1-score": 0.9655172413793104,
+          "support": 15.0
+        },
+        "accuracy": 0.9333333333333333,
+        "macro avg": {
+          "precision": 0.9766666666666666,
+          "recall": 0.9261172161172162,
+          "f1-score": 0.9429805406044833,
+          "support": 105.0
+        },
+        "weighted avg": {
+          "precision": 0.9488888888888888,
+          "recall": 0.9333333333333333,
+          "f1-score": 0.9326192644917434,
+          "support": 105.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          12,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          4,
+          0,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          6,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          23,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          2,
+          10,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          14
+        ]
+      ]
+    }
+  ]
+}

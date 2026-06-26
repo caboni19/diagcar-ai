@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block title %}OBD-II Diagnostic Codes — DiagCar AI{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">🔍 OBD-II Diagnostic</p>
+    <h1>Enter your fault code — get a full explanation</h1>
+    <p>Enter codes like P0300, P0171, C0035 and the AI will explain the fault, causes and recommended action.</p>
+  </div>
+</section>
+
+<section class="container" style="max-width:860px;padding:40px 20px">
+
+  <!-- Search box -->
+  <div style="display:flex;gap:12px;margin-bottom:32px">
+    <input id="obdInput" type="text" placeholder="P0300, P0171, C0035 …"
+      style="flex:1;padding:14px 18px;border-radius:14px;border:1px solid rgba(24,200,255,.25);
+             background:rgba(10,22,37,.7);color:#fff;font-size:1.05rem;letter-spacing:.08em;
+             text-transform:uppercase;outline:none"
+      oninput="this.value=this.value.toUpperCase()">
+    <button onclick="lookupOBD()" id="obdBtn"
+      style="padding:14px 28px;background:linear-gradient(135deg,#18c8ff,#0b74ff);
+             border:none;border-radius:14px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer">
+      Diagnose
+    </button>
+  </div>
+
+  <!-- Quick codes -->
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px">
+    {% for code in ['P0300','P0171','P0087','P0420','P0217','P0335','C0035','P2002','P0299','P0520'] %}
+    <button onclick="quickLookup('{{code}}')"
+      style="padding:6px 14px;border-radius:999px;border:1px solid rgba(24,200,255,.25);
+             background:transparent;color:#18c8ff;font-size:.82rem;cursor:pointer;
+             transition:.2s" onmouseover="this.style.background='rgba(24,200,255,.1)'"
+             onmouseout="this.style.background='transparent'">{{code}}</button>
+    {% endfor %}
+  </div>
+
+  <!-- Result -->
+  <div id="obdResult"></div>
+
+  <!-- OBD Guide table -->
+  <div style="margin-top:40px">
+    <h3 style="color:#fff;font-size:1.1rem;margin-bottom:16px">📚 Common OBD-II Code Families</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      {% for cat,desc,color in [
+        ('P0xxx','Engine & Emission','#22c55e'),
+        ('P1xxx','Manufacturer specific','#3b82f6'),
+        ('P2xxx','Generic powertrain','#8b5cf6'),
+        ('B0xxx','Body systems','#f5b301'),
+        ('C0xxx','Chassis (ABS/Brakes)','#ef4444'),
+        ('U0xxx','Network/CAN Bus','#18c8ff'),
+      ] %}
+      <div style="padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,.1);
+                  background:rgba(10,22,37,.6)">
+        <div style="font-weight:900;font-size:1rem;color:{{color}};margin-bottom:4px">{{cat}}</div>
+        <div style="font-size:.82rem;color:#b3c6d6">{{desc}}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+const SEV_COLORS = {
+  'حرج':'#ef4444','critical':'#ef4444',
+  'عالي':'#f5b301','high':'#f5b301',
+  'متوسط':'#3b82f6','medium':'#3b82f6',
+  'منخفض':'#22c55e','low':'#22c55e',
+};
+
+function quickLookup(code) {
+  document.getElementById('obdInput').value = code;
+  lookupOBD();
+}
+
+async function lookupOBD() {
+  const code = (document.getElementById('obdInput').value || '').trim().toUpperCase();
+  if (!code) return;
+  const btn = document.getElementById('obdBtn');
+  btn.textContent = '...'; btn.disabled = true;
+
+  const el = document.getElementById('obdResult');
+  el.innerHTML = '<div style="color:#b3c6d6;text-align:center;padding:30px">Searching…</div>';
+
+  try {
+    const res  = await fetch(`/api/obd/${code}`);
+    const data = await res.json();
+
+    if (!data.found) {
+      el.innerHTML = `<div style="padding:24px;border-radius:16px;border:1px solid rgba(239,68,68,.3);
+        background:rgba(239,68,68,.07);color:#fca5a5;text-align:center">
+        ❌ Code <strong>${code}</strong> not found in our database.
+        <br><span style="font-size:.85rem;opacity:.7">Try another code or describe the symptom in the chat.</span>
+      </div>`;
+      return;
+    }
+
+    const sev = data.niveau_gravite || 'N/A';
+    const sevColor = SEV_COLORS[sev] || '#b3c6d6';
+    el.innerHTML = `
+      <div style="border-radius:20px;border:1px solid rgba(24,200,255,.2);
+                  background:rgba(10,22,37,.8);padding:28px;backdrop-filter:blur(12px)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+          <div>
+            <span style="font-size:.75rem;color:#18c8ff;font-weight:900;letter-spacing:.12em">OBD-II CODE</span>
+            <h2 style="font-size:2rem;font-weight:900;color:#fff;margin:4px 0">${code}</h2>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <span style="padding:6px 16px;border-radius:999px;font-size:.8rem;font-weight:800;
+              background:${sevColor}22;color:${sevColor};border:1px solid ${sevColor}66">
+              ${sev}
+            </span>
+            ${data.categorie ? `<span style="padding:6px 16px;border-radius:999px;font-size:.8rem;
+              background:rgba(24,200,255,.1);color:#18c8ff;border:1px solid rgba(24,200,255,.25)">
+              ${data.categorie}</span>` : ''}
+          </div>
+        </div>
+
+        <div style="background:rgba(24,200,255,.05);border-radius:14px;padding:18px;margin-bottom:18px">
+          <div style="font-size:.75rem;color:#7f97b2;margin-bottom:6px;font-weight:700">FAULT NAME</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#fff">
+            ${data.nom_francais || 'See description below'}
+          </div>
+        </div>
+
+        ${data.description_arabe ? `
+        <div style="background:rgba(255,255,255,.04);border-radius:14px;padding:18px;margin-bottom:18px;direction:rtl;text-align:right">
+          <div style="font-size:.75rem;color:#7f97b2;margin-bottom:6px;font-weight:700">الوصف</div>
+          <div style="color:#b3c6d6;line-height:1.7;font-size:.92rem">${data.description_arabe}</div>
+        </div>` : ''}
+
+        ${data.action_recommandee ? `
+        <div style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);
+                    border-radius:14px;padding:18px;direction:rtl;text-align:right">
+          <div style="font-size:.75rem;color:#22c55e;margin-bottom:6px;font-weight:700">✅ الإجراء الموصى به</div>
+          <div style="color:#b3c6d6;line-height:1.7;font-size:.92rem">${data.action_recommandee}</div>
+        </div>` : ''}
+
+        <div style="margin-top:20px;text-align:center">
+          <a href="/diagnostic"
+            style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#18c8ff,#0b74ff);
+                   color:#fff;border-radius:14px;text-decoration:none;font-weight:700;font-size:.9rem">
+            💬 Diagnose this issue with AI Chat
+          </a>
+        </div>
+      </div>`;
+  } catch(e) {
+    el.innerHTML = `<div style="color:#ef4444;text-align:center;padding:20px">Connection error.</div>`;
+  } finally {
+    btn.textContent = 'Diagnose'; btn.disabled = false;
+  }
+}
+
+document.getElementById('obdInput').addEventListener('keydown', e => {
+  if(e.key === 'Enter') lookupOBD();
+});
+</script>
+{% endblock %}

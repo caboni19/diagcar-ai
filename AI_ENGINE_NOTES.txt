@@ -1,0 +1,21 @@
+DZ Nova upgrade summary
+==========================
+
+This version adds app/services/ai_diagnostic_engine.py.
+
+What changed:
+- The system no longer behaves like a raw CSV lookup.
+- The CSV/database cases are transformed into an internal knowledge base.
+- User symptoms are normalized across Arabic, Algerian Darija, French, and English.
+- Darija expressions such as "تريبل", "ما تجريش", "دخان كحل", "كلاتش", "فيتاس", "ضو" are mapped to diagnostic concepts.
+- The engine computes weighted similarity using:
+  1) token-set fuzzy matching,
+  2) partial matching,
+  3) token overlap,
+  4) Darija concept bonus,
+  5) category bonus,
+  6) vehicle-context bonus.
+- The answer now includes chat_response, a natural diagnostic answer in the user's language.
+
+Academic description:
+The system uses a hybrid AI-based diagnostic approach combining multilingual symptom normalization, Algerian Darija keyword mapping, rule-based inference, weighted fuzzy similarity scoring, and vehicle-context-aware recommendation.

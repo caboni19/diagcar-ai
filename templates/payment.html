@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% block title %}Payment — DiagCar AI{% endblock %}
+{% block content %}
+<section class="payment-section">
+  <div class="container" style="max-width:860px">
+
+    <!-- Header -->
+    <div class="payment-header">
+      <p class="eyebrow">💎 UPGRADE YOUR PLAN</p>
+      <h1>Complete your subscription</h1>
+      <p>Secure payment — Your data is never stored</p>
+    </div>
+
+    <!-- Steps -->
+    <div class="payment-steps">
+      <div class="pay-step done"><span class="step-num">✓</span>Plan Selected</div>
+      <div class="pay-step-sep"></div>
+      <div class="pay-step active"><span class="step-num">2</span>Payment Method</div>
+      <div class="pay-step-sep"></div>
+      <div class="pay-step"><span class="step-num">3</span>Confirmation</div>
+    </div>
+
+    <!-- Plan confirmation -->
+    <div class="plan-confirm-card">
+      <div>
+        <div class="plan-name">{{ plan_name or 'Pro Plan' }}</div>
+        <div class="plan-details">Unlimited diagnostics · Full OBD-II · PDF export</div>
+      </div>
+      <div style="text-align:right">
+        <div class="plan-price" id="displayPrice">{{ plan_price or '590' }} DA</div>
+        <div class="plan-details">/ month</div>
+      </div>
+    </div>
+
+    <!-- Payment Methods -->
+    <p style="color:#7f97b2;font-size:.82rem;margin-bottom:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">
+      Choose payment method
+    </p>
+
+    <div class="payment-methods-grid">
+
+      <!-- BaridMob -->
+      <div class="payment-method-card selected" data-method="baridmob" onclick="selectMethod(this)">
+        <div class="pm-check">✓</div>
+        <div style="font-size:2.5rem;margin-bottom:10px">📱</div>
+        <div class="pm-name">BaridMob</div>
+        <div class="pm-desc">Pay instantly via Algeria Post mobile app. CCP / CTP account required.</div>
+        <span class="pm-badge popular">⭐ Most Popular</span>
+        <span class="pm-badge instant">⚡ Instant</span>
+      </div>
+
+      <!-- CCP Virement -->
+      <div class="payment-method-card" data-method="ccp" onclick="selectMethod(this)">
+        <div class="pm-check"></div>
+        <div style="font-size:2.5rem;margin-bottom:10px">🏦</div>
+        <div class="pm-name">CCP / Baridi Pay</div>
+        <div class="pm-desc">Bank transfer to CCP account. Activation within 24 hours after confirmation.</div>
+        <span class="pm-badge secure">🔒 Secure</span>
+      </div>
+
+      <!-- CIB Card -->
+      <div class="payment-method-card" data-method="cib" onclick="selectMethod(this)">
+        <div class="pm-check"></div>
+        <div style="font-size:2.5rem;margin-bottom:10px">💳</div>
+        <div class="pm-name">CIB / Edahabia Card</div>
+        <div class="pm-desc">Pay with your Algerian bank card (CIB) or Algeria Post Edahabia card.</div>
+        <span class="pm-badge secure">🔒 Secure</span>
+        <span class="pm-badge instant">⚡ Instant</span>
+      </div>
+
+      <!-- Espèces -->
+      <div class="payment-method-card" data-method="especes" onclick="selectMethod(this)">
+        <div class="pm-check"></div>
+        <div style="font-size:2.5rem;margin-bottom:10px">💵</div>
+        <div class="pm-name">Espèces (Cash)</div>
+        <div class="pm-desc">Pay at any Algérie Poste office or our partner points. Show confirmation code.</div>
+        <span class="pm-badge" style="background:rgba(139,92,246,.15);color:#a78bfa;border-color:rgba(139,92,246,.3)">📍 In Person</span>
+      </div>
+
+    </div>
+
+    <!-- ─── BaridMob Form ─── -->
+    <div class="payment-form-box active" id="form-baridmob">
+      <h3>📱 BaridMob Payment</h3>
+      <div style="background:rgba(24,200,255,.07);border:1px solid rgba(24,200,255,.2);border-radius:14px;padding:16px;margin-bottom:18px">
+        <p style="font-size:.88rem;color:#b3c6d6;line-height:1.7">
+          <strong style="color:#18c8ff">How it works:</strong><br>
+          1. Open your BaridMob app → Transfer → Enter CCP number<br>
+          2. Enter your phone number below to receive confirmation<br>
+          3. After payment, your account is activated within <strong style="color:#22c55e">5 minutes</strong>
+        </p>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone Number (linked to BaridMob)</label>
+          <input type="tel" placeholder="07xxxxxxxx" id="bm_phone" maxlength="10">
+        </div>
+        <div class="form-group">
+          <label>CCP Account Number</label>
+          <input type="text" value="0049999-09" readonly style="opacity:.6;cursor:default">
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Full Name (as in CCP)</label>
+          <input type="text" placeholder="Bensaad Mohammed" id="bm_name" value="{{ user.first_name or '' }} {{ user.last_name or '' }}">
+        </div>
+      </div>
+      <div style="background:rgba(245,179,1,.07);border:1px solid rgba(245,179,1,.2);border-radius:12px;padding:12px 14px;margin-bottom:18px;font-size:.82rem;color:#f5b301">
+        ⚠️ Transfer amount: <strong>{{ plan_price or '590' }} DA</strong> to CCP <strong>0049999-09</strong> — DiagCar AI Platform
+      </div>
+    </div>
+
+    <!-- ─── CCP Form ─── -->
+    <div class="payment-form-box" id="form-ccp">
+      <h3>🏦 CCP / Baridi Pay Transfer</h3>
+      <div style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:14px;padding:16px;margin-bottom:18px">
+        <p style="font-size:.88rem;color:#b3c6d6;line-height:1.8">
+          <strong style="color:#22c55e">Bank Details:</strong><br>
+          Account: <strong style="color:#fff">0049999-09</strong><br>
+          Name: <strong style="color:#fff">DiagCar AI Platform</strong><br>
+          Bank: <strong style="color:#fff">Algérie Poste — CCP</strong><br>
+          Reference: <strong style="color:#18c8ff" id="ccp_ref">DIAG-{{ user.id or '0001' }}-PRO</strong>
+        </p>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your CCP Number</label>
+          <input type="text" placeholder="00XXXXXXXX-XX" id="ccp_num">
+        </div>
+        <div class="form-group">
+          <label>Transfer Reference / Receipt Number</label>
+          <input type="text" placeholder="Reference from your receipt" id="ccp_receipt">
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Upload Transfer Receipt (optional)</label>
+          <input type="file" accept="image/*,.pdf" id="ccp_file"
+            style="padding:8px;font-size:.85rem">
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── CIB Form ─── -->
+    <div class="payment-form-box" id="form-cib">
+      <h3>💳 CIB / Edahabia Card</h3>
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Card Number</label>
+          <input type="text" placeholder="XXXX XXXX XXXX XXXX" id="cib_num" maxlength="19"
+            oninput="this.value=this.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim()">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Expiry Date</label>
+          <input type="text" placeholder="MM/YY" id="cib_exp" maxlength="5"
+            oninput="this.value=this.value.replace(/\D/g,'').replace(/(\d{2})(\d)/,'$1/$2')">
+        </div>
+        <div class="form-group">
+          <label>CVV</label>
+          <input type="password" placeholder="•••" maxlength="3" id="cib_cvv">
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Cardholder Name</label>
+          <input type="text" placeholder="Name as on card" id="cib_name"
+            value="{{ user.first_name or '' }} {{ user.last_name or '' }}">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:4px">
+        <span style="font-size:.75rem;color:#4a6070">✓ SSL 256-bit encrypted</span>
+        <span style="font-size:.75rem;color:#4a6070">✓ Never stored</span>
+      </div>
+    </div>
+
+    <!-- ─── Espèces Form ─── -->
+    <div class="payment-form-box" id="form-especes">
+      <h3>💵 Cash Payment Instructions</h3>
+      <div style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.2);border-radius:14px;padding:16px;margin-bottom:18px">
+        <p style="font-size:.88rem;color:#b3c6d6;line-height:1.9">
+          <strong style="color:#a78bfa">Steps:</strong><br>
+          1. Note your <strong style="color:#fff">unique code</strong> below<br>
+          2. Go to any <strong style="color:#fff">Algérie Poste</strong> office<br>
+          3. Pay <strong style="color:#18c8ff">{{ plan_price or '590' }} DA</strong> and mention code <strong style="color:#22c55e" id="cash_code">DIAG-CASH-{{ user.id or '0001' }}</strong><br>
+          4. Account activated within <strong style="color:#22c55e">2 hours</strong> during business hours
+        </p>
+      </div>
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Your Phone (for confirmation SMS)</label>
+          <input type="tel" placeholder="07xxxxxxxx" id="esp_phone">
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="pay-summary-box">
+      <div class="pay-summary-row"><span>{{ plan_name or 'Pro Plan' }}</span><span>{{ plan_price or '590' }} DA</span></div>
+      <div class="pay-summary-row"><span>VAT (0% — Algeria)</span><span>0 DA</span></div>
+      <div class="pay-summary-row total"><span>Total due</span><span id="totalPrice">{{ plan_price or '590' }} DA</span></div>
+    </div>
+
+    <!-- Pay Button -->
+    <button class="pay-btn" id="payBtn" onclick="submitPayment()">
+      🔒 Confirm Payment — {{ plan_price or '590' }} DA
+    </button>
+
+    <div class="security-badges">
+      <span>🔒 SSL Encrypted</span>
+      <span>🛡️ Secure transaction</span>
+      <span>✅ Algérie Poste partner</span>
+      <span>↩️ Cancel anytime</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- Success Modal -->
+<div id="paySuccessModal" style="display:none;position:fixed;inset:0;background:rgba(3,7,13,.9);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:#06101d;border:1px solid rgba(34,197,94,.3);border-radius:32px;max-width:440px;width:90%;padding:40px;text-align:center;animation:modalIn .4s ease">
+    <div style="font-size:4rem;margin-bottom:16px">🎉</div>
+    <h2 style="color:#fff;font-size:1.5rem;font-weight:900;margin-bottom:10px">Payment Confirmed!</h2>
+    <p style="color:#b3c6d6;font-size:.9rem;line-height:1.7;margin-bottom:24px">
+      Your <strong style="color:#18c8ff" id="successPlan">Pro</strong> subscription is now active.<br>
+      You have <strong style="color:#22c55e">unlimited</strong> diagnostics.
+    </p>
+    <a href="/diagnostic" style="display:block;padding:14px;background:linear-gradient(135deg,#18c8ff,#0b74ff);border-radius:16px;color:#fff;font-weight:700;text-decoration:none;margin-bottom:10px">
+      🚗 Start Diagnosing Now
+    </a>
+    <a href="/dashboard" style="display:block;padding:12px;color:#7f97b2;font-size:.88rem">Go to Dashboard →</a>
+  </div>
+</div>
+
+<script>
+let currentMethod = 'baridmob';
+
+function selectMethod(card) {
+  document.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.payment-method-card .pm-check').forEach(c => c.textContent = '');
+  document.querySelectorAll('.payment-form-box').forEach(f => f.classList.remove('active'));
+  card.classList.add('selected');
+  card.querySelector('.pm-check').textContent = '✓';
+  currentMethod = card.dataset.method;
+  const form = document.getElementById('form-' + currentMethod);
+  if (form) form.classList.add('active');
+}
+
+function submitPayment() {
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Processing…';
+
+  // Simulate payment processing
+  setTimeout(() => {
+    // Mark as subscribed
+    if (window.DiagCarSub) {
+      window.DiagCarSub.setSubscribed();
+      window.DiagCarSub.updateUI();
+    }
+    // Show success modal
+    document.getElementById('successPlan').textContent = '{{ plan_name or "Pro" }}';
+    const modal = document.getElementById('paySuccessModal');
+    modal.style.display = 'flex';
+    btn.disabled = false;
+    btn.textContent = '🔒 Confirm Payment — {{ plan_price or "590" }} DA';
+  }, 2200);
+}
+
+// Close success modal on outside click
+document.getElementById('paySuccessModal').addEventListener('click', function(e) {
+  if (e.target === this) this.style.display = 'none';
+});
+</script>
+{% endblock %}

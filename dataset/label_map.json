@@ -1,0 +1,39 @@
+{
+  "label2id": {
+    "carburant": 0,
+    "climatisation": 1,
+    "direction": 2,
+    "freinage": 3,
+    "moteur": 4,
+    "refroidissement": 5,
+    "suspension": 6,
+    "transmission": 7,
+    "échappement": 8,
+    "électricité": 9
+  },
+  "id2label": {
+    "0": "carburant",
+    "1": "climatisation",
+    "2": "direction",
+    "3": "freinage",
+    "4": "moteur",
+    "5": "refroidissement",
+    "6": "suspension",
+    "7": "transmission",
+    "8": "échappement",
+    "9": "électricité"
+  },
+  "num_labels": 10,
+  "labels": [
+    "carburant",
+    "climatisation",
+    "direction",
+    "freinage",
+    "moteur",
+    "refroidissement",
+    "suspension",
+    "transmission",
+    "échappement",
+    "électricité"
+  ]
+}

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Update Vehicle Profile — DiagCar AI{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="container">
+  <p class="eyebrow">🚗 Vehicle Profile</p>
+  <h1>Update your vehicle information</h1>
+</div></section>
+
+<section class="container" style="max-width:640px;padding:40px 20px">
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat,msg in msgs %}
+    <div style="padding:12px 18px;border-radius:12px;margin-bottom:16px;
+      background:rgba({% if cat=='success' %}34,197,94{% else %}239,68,68{% endif %},.1);
+      border:1px solid rgba({% if cat=='success' %}34,197,94{% else %}239,68,68{% endif %},.3);
+      color:{% if cat=='success' %}#22c55e{% else %}#ef4444{% endif %}">{{msg}}</div>
+    {% endfor %}
+  {% endwith %}
+
+  <form method="POST" action="/profile/update"
+    style="background:rgba(10,22,37,.8);border:1px solid rgba(24,200,255,.15);
+           border-radius:24px;padding:32px">
+
+    <h3 style="color:#fff;margin-bottom:20px;font-size:1.1rem">Personal Info</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px">
+      {% for label,name,val in [
+        ('First Name','first_name', user.first_name),
+        ('Last Name','last_name', user.last_name or ''),
+        ('Email','email', user.email),
+        ('Phone','phone', user.phone or ''),
+      ] %}
+      <div>
+        <label style="font-size:.8rem;color:#7f97b2;display:block;margin-bottom:6px">{{label}}</label>
+        <input type="text" name="{{name}}" value="{{val}}"
+          style="width:100%;padding:11px 14px;border-radius:12px;
+                 border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);
+                 color:#fff;font-size:.9rem;outline:none">
+      </div>
+      {% endfor %}
+    </div>
+
+    <h3 style="color:#fff;margin-bottom:20px;font-size:1.1rem">Vehicle Info</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px">
+      {% for label,name,val in [
+        ('Brand','car_brand', user.car_brand or ''),
+        ('Model','car_model', user.car_model or ''),
+        ('Year','car_year', user.car_year or ''),
+        ('Mileage (km)','mileage', user.mileage or ''),
+      ] %}
+      <div>
+        <label style="font-size:.8rem;color:#7f97b2;display:block;margin-bottom:6px">{{label}}</label>
+        <input type="text" name="{{name}}" value="{{val}}"
+          style="width:100%;padding:11px 14px;border-radius:12px;
+                 border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);
+                 color:#fff;font-size:.9rem;outline:none">
+      </div>
+      {% endfor %}
+
+      <div>
+        <label style="font-size:.8rem;color:#7f97b2;display:block;margin-bottom:6px">Fuel Type</label>
+        <select name="fuel_type"
+          style="width:100%;padding:11px 14px;border-radius:12px;
+                 border:1px solid rgba(255,255,255,.12);background:rgba(10,22,37,.9);
+                 color:#fff;font-size:.9rem;outline:none">
+          {% for opt in ['essence','diesel','hybride','électrique','GPL'] %}
+          <option value="{{opt}}" {% if user.fuel_type==opt %}selected{% endif %}>{{opt}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label style="font-size:.8rem;color:#7f97b2;display:block;margin-bottom:6px">Transmission</label>
+        <select name="transmission"
+          style="width:100%;padding:11px 14px;border-radius:12px;
+                 border:1px solid rgba(255,255,255,.12);background:rgba(10,22,37,.9);
+                 color:#fff;font-size:.9rem;outline:none">
+          {% for opt in ['manual','automatic','semi-automatic'] %}
+          <option value="{{opt}}" {% if user.transmission==opt %}selected{% endif %}>{{opt}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px">
+      <button type="submit"
+        style="flex:1;padding:14px;background:linear-gradient(135deg,#18c8ff,#0b74ff);
+               border:none;border-radius:14px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer">
+        💾 Save Changes
+      </button>
+      <a href="/dashboard"
+        style="padding:14px 20px;border-radius:14px;border:1px solid rgba(255,255,255,.15);
+               color:#b3c6d6;text-decoration:none;font-size:.9rem;display:flex;align-items:center">
+        Cancel
+      </a>
+    </div>
+  </form>
+</section>
+{% endblock %}

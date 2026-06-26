@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block title %}DiagCar AI — Smart Vehicle Diagnostics{% endblock %}
+{% block content %}
+
+<!-- HERO -->
+<section class="dz-hero">
+  <div class="dz-hero-bg"></div>
+  <div class="dz-orb dz-orb-one"></div>
+  <div class="dz-orb dz-orb-two"></div>
+  <div class="container dz-hero-inner">
+    <div class="dz-hero-copy">
+      <p class="dz-welcome" data-i18n="hero_welcome">WELCOME TO DIAG CAR</p>
+      <h1 class="dz-hero-title" data-i18n="hero_title">Smart Vehicle <span>Diagnostics</span> Powered by AI</h1>
+      <p class="dz-hero-subtitle" data-i18n="hero_lead">Understand your car before the mechanic does. DiagCar analyzes symptoms, explains probable faults and guides you with practical recommendations.</p>
+      <div class="hero-actions dz-hero-actions">
+        {% if user %}
+        <a class="btn btn-primary dz-primary-btn" href="{{ url_for('main.diagnostic') }}" data-i18n="launch_wizard">Start Diagnosis</a>
+        <a class="btn btn-light dz-secondary-btn" href="{{ url_for('main.dashboard') }}" data-i18n="open_dashboard">My Vehicle</a>
+        {% else %}
+        <a class="btn btn-primary dz-primary-btn" href="{{ url_for('auth.register') }}" data-i18n="create_account">Create Account</a>
+        <a class="btn btn-light dz-secondary-btn" href="{{ url_for('auth.login') }}" data-i18n="nav_login">Login</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="dz-car-stage" aria-hidden="true">
+      <div class="dz-scan-ring"><span></span><i></i></div>
+      <img src="{{ url_for('static', filename='img/royal/car-rent-1.png') }}" alt="DiagCar smart vehicle" class="dz-hero-car">
+      <div class="dz-floating-card dz-card-1"><strong>AI</strong><span>Symptom analysis</span></div>
+      <div class="dz-floating-card dz-card-2"><strong>OBD</strong><span>Fault mapping</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES STRIP -->
+<section class="container dz-value-strip">
+  <article><span>01</span><h3>AI-powered analysis</h3><p>The engine interprets symptoms and ranks probable faults using NLP + ML + Deep Learning.</p></article>
+  <article><span>02</span><h3>Multilingual support</h3><p>Arabic, French, English and Algerian Darija are fully supported.</p></article>
+  <article><span>03</span><h3>Clear reports</h3><p>Every result includes probability, severity, OBD code and recommended action.</p></article>
+</section>
+
+<!-- WORKFLOW -->
+<section class="container service-section dz-service-section">
+  <div class="section-heading">
+    <p class="eyebrow">DIAGCAR WORKFLOW</p>
+    <h2>A cleaner way to understand vehicle problems</h2>
+  </div>
+  <div class="feature-grid dz-feature-grid">
+    <article class="feature-card dz-feature-card"><div class="feature-icon">1</div><h3>Save your vehicle</h3><p>Enter the car profile once during registration.</p></article>
+    <article class="feature-card dz-feature-card"><div class="feature-icon">2</div><h3>Describe the symptom</h3><p>Type in normal language — French, Arabic, Darija or Arabizi.</p></article>
+    <article class="feature-card dz-feature-card"><div class="feature-icon">3</div><h3>Receive a smart report</h3><p>Get a professional diagnostic card with explanation and recommendation.</p></article>
+  </div>
+</section>
+
+<!-- ══ PRICING SECTION ══════════════════════════ -->
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">💎 PLANS &amp; PRICING</p>
+      <h2>Choose the plan <span>that fits your needs</span></h2>
+      <p style="color:#b3c6d6;margin-top:10px;font-size:.95rem">Start free with 7 diagnostics — upgrade anytime for unlimited access.</p>
+    </div>
+
+    <!-- Monthly / Annual toggle -->
+    <div class="pricing-toggle">
+      <span>Monthly</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="billingToggle">
+        <span class="toggle-track"></span>
+        <span class="toggle-knob"></span>
+      </label>
+      <span>Annual <strong style="color:#22c55e;font-size:.8rem">(-20%)</strong></span>
+    </div>
+
+    <div class="plans-grid">
+
+      <!-- FREE -->
+      <div class="plan-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price"><strong>0</strong><span>DA / month</span></div>
+        <div class="plan-price-annual"><strong>0</strong><span>DA / year</span></div>
+        <div class="plan-saving">&nbsp;</div>
+        <hr class="plan-divider">
+        <ul class="plan-features">
+          <li><span class="fi fi-check">✅</span> 7 diagnostics total</li>
+          <li><span class="fi fi-check">✅</span> Basic fault detection</li>
+          <li><span class="fi fi-check">✅</span> Arabic + French support</li>
+          <li class="disabled"><span class="fi fi-cross">❌</span> Unlimited diagnostics</li>
+          <li class="disabled"><span class="fi fi-cross">❌</span> Full OBD-II library</li>
+          <li class="disabled"><span class="fi fi-cross">❌</span> Diagnostic history</li>
+          <li class="disabled"><span class="fi fi-cross">❌</span> PDF export</li>
+          <li class="disabled"><span class="fi fi-cross">❌</span> Priority support</li>
+        </ul>
+        {% if user %}
+        <a href="{{ url_for('main.diagnostic') }}" class="plan-cta free">Start Diagnosing</a>
+        {% else %}
+        <a href="{{ url_for('auth.register') }}" class="plan-cta free">Get Started Free</a>
+        {% endif %}
+      </div>
+
+      <!-- PRO  (popular) -->
+      <div class="plan-card popular">
+        <span class="plan-badge">⭐ MOST POPULAR</span>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><strong>590</strong><span>DA / month</span></div>
+        <div class="plan-price-annual"><strong>472</strong><span>DA / month</span></div>
+        <div class="plan-saving annual-saving" style="display:none">Save 1,416 DA / year</div>
+        <hr class="plan-divider">
+        <ul class="plan-features">
+          <li><span class="fi fi-check">✅</span> <strong style="color:#fff">Unlimited</strong> diagnostics</li>
+          <li><span class="fi fi-check">✅</span> Full OBD-II code library</li>
+          <li><span class="fi fi-check">✅</span> Arabic + French + Darija</li>
+          <li><span class="fi fi-check">✅</span> Diagnostic history &amp; reports</li>
+          <li><span class="fi fi-check">✅</span> PDF export</li>
+          <li><span class="fi fi-check">✅</span> Vehicle profile (1 car)</li>
+          <li><span class="fi fi-check">✅</span> Workshop locator</li>
+          <li class="disabled"><span class="fi fi-cross">❌</span> Multi-vehicle support</li>
+        </ul>
+        <button class="plan-cta primary" onclick="window.location.href='/payment?plan=Pro'">Subscribe — Pro</button>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="plan-card">
+        <div class="plan-name">Premium</div>
+        <div class="plan-price"><strong>990</strong><span>DA / month</span></div>
+        <div class="plan-price-annual"><strong>792</strong><span>DA / month</span></div>
+        <div class="plan-saving annual-saving" style="display:none">Save 2,376 DA / year</div>
+        <hr class="plan-divider">
+        <ul class="plan-features">
+          <li><span class="fi fi-check">✅</span> <strong style="color:#fff">Unlimited</strong> diagnostics</li>
+          <li><span class="fi fi-check">✅</span> Full OBD-II code library</li>
+          <li><span class="fi fi-check">✅</span> All languages incl. Darija</li>
+          <li><span class="fi fi-check">✅</span> Full diagnostic history</li>
+          <li><span class="fi fi-check">✅</span> PDF export + share</li>
+          <li><span class="fi fi-check">✅</span> <strong style="color:#fff">Up to 3 vehicles</strong></li>
+          <li><span class="fi fi-check">✅</span> Maintenance reminders</li>
+          <li><span class="fi fi-check">✅</span> Priority support 24/7</li>
+        </ul>
+        <button class="plan-cta outline" onclick="window.location.href='/payment?plan=Premium'">Subscribe — Premium</button>
+      </div>
+
+    </div><!-- /plans-grid -->
+  </div><!-- /container -->
+</section>
+
+<!-- SUBSCRIPTION MODAL (shared — also used from diagnostic page) -->
+{% include 'partials/subscription_modal.html' %}
+
+<script>
+// Billing toggle
+const toggle = document.getElementById('billingToggle');
+const monthlyPrices = document.querySelectorAll('.plan-price');
+const annualPrices  = document.querySelectorAll('.plan-price-annual');
+const annualSavings = document.querySelectorAll('.annual-saving');
+if(toggle){
+  toggle.addEventListener('change', () => {
+    const annual = toggle.checked;
+    monthlyPrices.forEach(el => el.style.display = annual ? 'none' : 'flex');
+    annualPrices.forEach(el => el.style.display = annual ? 'flex' : 'none');
+    annualSavings.forEach(el => el.style.display = annual ? 'block' : 'none');
+  });
+}
+function openSubModal(plan){ window.openSubscriptionModal && window.openSubscriptionModal(plan); }
+</script>
+{% endblock %}

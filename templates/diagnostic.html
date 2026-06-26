@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}Diagnostic Chat — DiagCar AI{% endblock %}
+{% block content %}
+<section class="page-hero diagnostic-hero">
+  <div class="container">
+    <p class="eyebrow" data-i18n="chat_badge">AI Diagnostic Chat</p>
+    <h1 data-i18n="chat_title">Describe the symptom. Your car profile is already loaded.</h1>
+    <p data-i18n="chat_lead">The system uses the vehicle information saved during registration.</p>
+  </div>
+</section>
+
+<section class="container diagnostic-layout chat-layout">
+  <!-- SIDEBAR -->
+  <aside class="diagnostic-side vehicle-summary-side">
+    {% set brand_slug = (user.car_brand or 'default')|lower|replace(' ','-') %}
+    {% if brand_slug == 'mercedes-benz' %}{% set brand_slug = 'mercedes' %}{% endif %}
+    {% set brand_png = url_for('static', filename='img/brands/' ~ brand_slug ~ '.png') %}
+    {% set brand_svg = url_for('static', filename='img/brands/' ~ brand_slug ~ '.svg') %}
+    {% set default_logo = url_for('static', filename='img/brands/default.svg') %}
+
+    <div class="active-brand-panel pro-brand-panel diagnostic-brand-panel-clean">
+      <div class="diagnostic-brand-chip">
+        <img class="brand-logo-lg real-brand-logo"
+             src="{{ brand_png }}"
+             onerror="this.onerror=function(){this.onerror=null;this.src='{{ default_logo }}'};this.src='{{ brand_svg }}';"
+             alt="{{ user.car_brand or 'Vehicle' }} logo">
+        <div>
+          <span>Current vehicle</span>
+          <strong>{{ user.car_brand or 'Vehicle' }}</strong>
+        </div>
+      </div>
+      <img class="vehicle-side-car" src="{{ url_for('static', filename='img/royal/about.png') }}" alt="">
+    </div>
+
+    <div class="steps-card saved-car-card">
+      <p class="badge" data-i18n="active_vehicle">Active vehicle</p>
+      <h3>{{ user.car_brand or 'Vehicle' }} {{ user.car_model or '' }}</h3>
+      <div class="side-facts">
+        <div><span>Brand</span><strong>{{ user.car_brand or '--' }}</strong></div>
+        <div><span>Model</span><strong>{{ user.car_model or '--' }}</strong></div>
+        <div><span>Year</span><strong>{{ user.car_year or '--' }}</strong></div>
+        <div><span>Fuel</span><strong>{{ user.fuel_type or '--' }}</strong></div>
+        <div><span>Transmission</span><strong>{{ user.transmission or '--' }}</strong></div>
+        <div><span>Mileage</span><strong>{{ user.mileage or '--' }}</strong></div>
+      </div>
+    </div>
+
+    <!-- ── SUBSCRIPTION MINI-CARD in sidebar ── -->
+    <div class="steps-card" style="margin-top:16px;background:rgba(24,200,255,.05);border-color:rgba(24,200,255,.2)">
+      <p class="badge" style="background:rgba(245,179,1,.15);color:#f5b301;border-color:rgba(245,179,1,.3)">💎 Free Plan</p>
+      <div id="sidebarDiagCount" style="margin:10px 0 4px;font-size:.88rem;color:#b3c6d6">
+        <strong id="sidebarUsed" style="color:#fff">0</strong> / 7 free diagnostics used
+      </div>
+      <div class="diag-dots" id="sidebarDots" style="margin-bottom:12px"></div>
+      <button onclick="window.openSubscriptionModal && window.openSubscriptionModal('pro',false)"
+              style="width:100%;padding:10px;background:linear-gradient(135deg,#18c8ff,#0b74ff);border:none;border-radius:12px;color:#fff;font-weight:700;font-size:.85rem;cursor:pointer">
+        💎 Upgrade to Pro
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <div class="diagnostic-main">
+
+    <!-- ── COUNTER BAR ── -->
+    <div class="diag-counter-bar" id="diagCounterBar">
+      <div class="counter-label">
+        Free diagnostics: <strong id="counterUsed">0</strong> / 7 used
+        &nbsp;·&nbsp;
+        <strong id="counterLeft" style="color:#22c55e">7 remaining</strong>
+      </div>
+      <div class="diag-dots" id="counterDots"></div>
+      <button class="counter-upgrade-btn" onclick="window.openSubscriptionModal && window.openSubscriptionModal('pro',false)">
+        💎 Upgrade
+      </button>
+    </div>
+
+    <!-- ── CHAT BOX ── -->
+    <section class="chat-box panel">
+      <div class="panel-title">
+        <h2 data-i18n="symptom_chat">Diagnostic conversation</h2>
+        <span data-i18n="vehicle_loaded">Vehicle profile loaded</span>
+      </div>
+      <div class="chat-thread" id="chatThread">
+        <div class="bot-message" data-i18n="chat_intro">
+          Hello. Tell me the symptoms: sound, smoke, warning light, overheating, braking issue or anything unusual.
+        </div>
+      </div>
+      <textarea id="symptoms" placeholder="Example: engine light is on, car overheats and black smoke appears..." rows="3"></textarea>
+      <div class="chat-actions">
+        <button id="voiceBtn" type="button" class="btn btn-light">🎙 Voice</button>
+        <button onclick="resetConversation()" type="button" class="btn btn-light" title="Clear conversation">🔄</button>
+        <button onclick="exportToPDF()" type="button" class="btn btn-light" title="Export PDF">📄 PDF</button>
+        <button id="sendBtn" type="button" class="btn btn-primary">Send to AI</button>
+      </div>
+    </section>
+
+    <!-- QUICK PROMPTS -->
+    <section class="quick-grid chat-quick-grid">
+      <button type="button" data-q="Le voyant moteur est allumé et la voiture consomme trop d'essence">⚠️<span>Engine light + consumption</span></button>
+      <button type="button" data-q="السيارة تسخن بزاف وضو الزيت شاعل">🌡️<span>Overheating + oil</span></button>
+      <button type="button" data-q="bruit bizarre au démarrage et batterie faible">🔧<span>Startup noise</span></button>
+      <button type="button" data-q="problème de freinage, pédale dure, voiture ne s'arrête pas bien">🛑<span>Braking issue</span></button>
+    </section>
+
+    <section id="result" class="result premium-result-zone"></section>
+  </div>
+</section>
+
+<!-- SUBSCRIPTION MODAL -->
+{% include 'partials/subscription_modal.html' %}
+
+<!-- Vehicle data -->
+<script id="vehicle-data" type="application/json">
+{
+  "brand":        {{ (user.car_brand or '')|tojson }},
+  "model":        {{ (user.car_model or '')|tojson }},
+  "year":         {{ (user.car_year or '')|tojson }},
+  "fuel":         {{ (user.fuel_type or '')|tojson }},
+  "transmission": {{ (user.transmission or '')|tojson }},
+  "mileage":      {{ (user.mileage or '')|tojson }}
+}
+</script>
+<script>
+window.DIAGCAR_USER_VEHICLE = JSON.parse(document.getElementById('vehicle-data').textContent);
+</script>
+<script src="{{ url_for('static', filename='js/diagnostic.js') }}"></script>
+{% endblock %}

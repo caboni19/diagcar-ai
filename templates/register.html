@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block title %}Register - DiagCar AI{% endblock %}
+{% block content %}
+<div class="form-page register-premium-page">
+  <form class="form-card register-card-pro" method="post">
+    <p class="badge" data-i18n="create_driver">Create Driver Profile</p>
+    <h1 data-i18n="create_account">Create account</h1>
+    <p data-i18n="register_text">Your account is saved in MySQL and your vehicle profile will be reused automatically in the AI diagnostic chat.</p>
+
+    <h3 class="form-section-title" data-i18n="driver_info">Driver information</h3>
+    <div class="two">
+      <input name="first_name" placeholder="First name *" data-i18n-placeholder="first_name" required>
+      <input name="last_name" placeholder="Last name" data-i18n-placeholder="last_name">
+    </div>
+    <input name="email" type="email" placeholder="Email *" data-i18n-placeholder="email_required" required>
+    <input name="phone" placeholder="Phone" data-i18n-placeholder="phone">
+
+    <h3 class="form-section-title" data-i18n="vehicle_info">Vehicle information</h3>
+    <div class="brand-picker-preview premium-brand-preview">
+      <div class="logo-orbit"><img id="brandLogoPreview" src="{{ url_for('static', filename='img/brands/default.svg') }}" alt="Vehicle brand logo"></div>
+      <div><strong id="brandPreviewName">DiagCar AI</strong><span data-i18n="brand_logo_hint">The logo updates according to the selected manufacturer</span></div>
+    </div>
+
+    <div class="brand-logo-strip" aria-label="Supported brands">
+      <img src="{{ url_for('static', filename='img/brands/toyota.png') }}" alt="Toyota">
+      <img src="{{ url_for('static', filename='img/brands/renault.png') }}" alt="Renault">
+      <img src="{{ url_for('static', filename='img/brands/peugeot.png') }}" alt="Peugeot">
+      <img src="{{ url_for('static', filename='img/brands/hyundai.png') }}" alt="Hyundai">
+      <img src="{{ url_for('static', filename='img/brands/kia.png') }}" alt="Kia">
+      <img src="{{ url_for('static', filename='img/brands/volkswagen.png') }}" alt="Volkswagen">
+      <img src="{{ url_for('static', filename='img/brands/bmw.png') }}" alt="BMW">
+      <img src="{{ url_for('static', filename='img/brands/mercedes.png') }}" alt="Mercedes-Benz">
+      <img src="{{ url_for('static', filename='img/brands/audi.png') }}" alt="Audi">
+    </div>
+
+    <div class="two">
+      <select id="carBrand" name="car_brand" required>
+        <option value="" data-i18n="brand">Brand</option>
+        <option value="Renault">Renault</option>
+        <option value="Peugeot">Peugeot</option>
+        <option value="Hyundai">Hyundai</option>
+        <option value="Kia">Kia</option>
+        <option value="Toyota">Toyota</option>
+        <option value="Volkswagen">Volkswagen</option>
+        <option value="Mercedes-Benz">Mercedes-Benz</option>
+        <option value="BMW">BMW</option>
+        <option value="Ford">Ford</option>
+        <option value="Audi">Audi</option>
+        <option value="Dacia">Dacia</option>
+        <option value="Seat">Seat</option>
+        <option value="Citroen">Citroen</option>
+        <option value="Fiat">Fiat</option>
+        <option value="Nissan">Nissan</option>
+        <option value="Opel">Opel</option>
+      </select>
+      <select id="carModel" name="car_model" required disabled>
+        <option value="" data-i18n="model">Select brand first</option>
+      </select>
+    </div>
+    <div class="two">
+      <input name="car_year" type="number" min="1980" max="2026" placeholder="Year" data-i18n-placeholder="year" required>
+      <select name="fuel_type" required>
+        <option value="" data-i18n="fuel">Fuel type</option>
+        <option>Essence</option><option>Diesel</option><option>GPL</option><option>Hybrid</option><option>Electric</option>
+      </select>
+    </div>
+    <div class="two">
+      <select name="transmission">
+        <option value="" data-i18n="transmission">Transmission</option>
+        <option>Manual</option><option>Automatic</option>
+      </select>
+      <input name="mileage" type="number" min="0" placeholder="Mileage" data-i18n-placeholder="mileage_ph">
+    </div>
+
+    <input name="password" type="password" placeholder="Password *" data-i18n-placeholder="password_required" required>
+    <button class="btn btn-primary full" data-i18n="register_btn">Register</button>
+    <p class="muted"><span data-i18n="already_account">Already have an account?</span> <a href="{{ url_for('auth.login') }}" data-i18n="login_btn">Login</a></p>
+  </form>
+</div>
+<script>
+(function(){
+  const logos = {
+    'renault':'renault.png',
+    'peugeot':'peugeot.png',
+    'hyundai':'hyundai.png',
+    'kia':'kia.png',
+    'toyota':'toyota.png',
+    'volkswagen':'volkswagen.png',
+    'mercedes-benz':'mercedes.png',
+    'mercedes':'mercedes.png',
+    'bmw':'bmw.png',
+    'ford':'ford.png',
+    'audi':'audi.png',
+    'dacia':'dacia.svg',
+    'seat':'seat.svg',
+    'citroen':'citroen.svg',
+    'fiat':'fiat.svg',
+    'nissan':'nissan.svg',
+    'opel':'opel.svg'
+  };
+
+  const modelsByBrand = {
+    'renault': ['Clio', 'Symbol', 'Megane', 'Captur', 'Kadjar', 'Kangoo', 'Trafic', 'Twingo', 'Scenic', 'Laguna', 'Talisman', 'Fluence'],
+    'peugeot': ['206', '207', '208', '301', '307', '308', '508', '2008', '3008', '5008', 'Partner', 'Expert'],
+    'hyundai': ['i10', 'i20', 'i30', 'Accent', 'Elantra', 'Sonata', 'Tucson', 'Santa Fe', 'Creta', 'Kona', 'H1', 'Atos'],
+    'kia': ['Picanto', 'Rio', 'Cerato', 'Ceed', 'Sportage', 'Sorento', 'Optima', 'Stonic', 'Niro', 'Carens', 'Soul', 'K2700'],
+    'toyota': ['Yaris', 'Corolla', 'Auris', 'Avensis', 'Camry', 'RAV4', 'Land Cruiser', 'Hilux', 'Prado', 'C-HR', 'Prius', 'Aygo'],
+    'volkswagen': ['Golf', 'Polo', 'Passat', 'Jetta', 'Tiguan', 'Touareg', 'Touran', 'Caddy', 'Transporter', 'T-Roc', 'Arteon', 'Bora'],
+    'mercedes-benz': ['A-Class', 'B-Class', 'C-Class', 'E-Class', 'S-Class', 'CLA', 'CLS', 'GLA', 'GLC', 'GLE', 'GLS', 'Sprinter', 'Vito'],
+    'bmw': ['Series 1', 'Series 2', 'Series 3', 'Series 4', 'Series 5', 'Series 7', 'X1', 'X2', 'X3', 'X5', 'X6', 'M3', 'M5'],
+    'ford': ['Fiesta', 'Focus', 'Mondeo', 'Fusion', 'Kuga', 'EcoSport', 'Explorer', 'Ranger', 'Transit', 'C-Max', 'S-Max', 'Mustang'],
+    'audi': ['A1', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'Q2', 'Q3', 'Q5', 'Q7', 'Q8', 'TT'],
+    'dacia': ['Logan', 'Sandero', 'Duster', 'Dokker', 'Lodgy', 'Spring', 'Jogger'],
+    'seat': ['Ibiza', 'Leon', 'Cordoba', 'Toledo', 'Ateca', 'Arona', 'Alhambra', 'Tarraco'],
+    'citroen': ['C1', 'C2', 'C3', 'C4', 'C5', 'C-Elysee', 'Berlingo', 'Jumpy', 'Cactus', 'DS3'],
+    'fiat': ['Panda', 'Punto', 'Tipo', '500', '500X', 'Doblo', 'Ducato', 'Fiorino', 'Bravo', 'Linea'],
+    'nissan': ['Micra', 'Sunny', 'Almera', 'Sentra', 'Qashqai', 'Juke', 'X-Trail', 'Navara', 'Patrol', 'Pathfinder'],
+    'opel': ['Corsa', 'Astra', 'Insignia', 'Mokka', 'Crossland', 'Grandland', 'Zafira', 'Meriva', 'Vivaro', 'Combo']
+  };
+
+  const brandSelect = document.getElementById('carBrand');
+  const modelSelect = document.getElementById('carModel');
+  const img = document.getElementById('brandLogoPreview');
+  const label = document.getElementById('brandPreviewName');
+
+  function slug(v){
+    return String(v || '')
+      .trim()
+      .toLowerCase()
+      .replace(/&/g,'and')
+      .replace(/[^a-z0-9]+/g,'-')
+      .replace(/^-+|-+$/g,'') || 'default';
+  }
+
+  function placeholder(text){
+    const opt = document.createElement('option');
+    opt.value = '';
+    opt.textContent = text;
+    opt.disabled = true;
+    opt.selected = true;
+    return opt;
+  }
+
+  function fillModels(brand){
+    if(!modelSelect) return;
+    const key = slug(brand);
+    const models = modelsByBrand[key] || [];
+    modelSelect.innerHTML = '';
+    if(!brand || !models.length){
+      modelSelect.appendChild(placeholder('Select brand first'));
+      modelSelect.disabled = true;
+      return;
+    }
+    modelSelect.disabled = false;
+    modelSelect.appendChild(placeholder('Model'));
+    models.forEach(model => {
+      const opt = document.createElement('option');
+      opt.value = model;
+      opt.textContent = model;
+      modelSelect.appendChild(opt);
+    });
+  }
+
+  function updateBrandUI(){
+    if(!brandSelect) return;
+    const brand = brandSelect.value || 'DiagCar AI';
+    const key = slug(brand);
+    const file = logos[key] || 'default.svg';
+    if(img) img.src = `/static/img/brands/${file}`;
+    if(label) label.textContent = brand;
+    fillModels(brandSelect.value);
+  }
+
+  if(brandSelect){
+    brandSelect.addEventListener('change', updateBrandUI);
+    updateBrandUI();
+  }
+})();
+</script>
+{% endblock %}

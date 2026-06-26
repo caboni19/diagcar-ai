@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Login - DiagCar AI{% endblock %}
+{% block content %}
+<div class="form-page">
+  <form class="form-card" method="post">
+    <p class="badge" data-i18n="secure_access">Secure Access</p>
+    <h1 data-i18n="login_title">Login</h1>
+    <p data-i18n="login_text">Access your diagnostic dashboard, vehicle history and AI reports.</p>
+    <input name="email" type="email" placeholder="Email" data-i18n-placeholder="email" required>
+    <input name="password" type="password" placeholder="Password" data-i18n-placeholder="password" required>
+    <button class="btn primary full" data-i18n="login_btn">Login</button>
+    <p class="muted"><span data-i18n="no_account">No account?</span> <a href="{{ url_for('auth.register') }}" data-i18n="register_link">Register</a></p>
+  </form>
+</div>
+{% endblock %}

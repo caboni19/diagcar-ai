@@ -1,0 +1,9 @@
+Flask==3.0.3
+mysql-connector-python==9.0.0
+python-dotenv==1.0.1
+Werkzeug==3.0.3
+scikit-learn==1.5.1
+rapidfuzz==3.9.6
+joblib==1.4.2
+pandas==2.2.2
+numpy==1.26.4

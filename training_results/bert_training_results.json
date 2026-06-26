@@ -1,0 +1,242 @@
+{
+  "model": "aubmindlab/bert-base-arabertv2",
+  "task": "automotive_fault_classification",
+  "project": "DiagCar AI — DZ Nova Platform",
+  "institution": "University Center SI-ELHOUES–BARIKA",
+  "training_platform": "Google Colab (Tesla T4 GPU, 16GB VRAM)",
+  "dataset": {
+    "total_samples": 525,
+    "train_samples": 420,
+    "test_samples": 105,
+    "num_classes": 10,
+    "languages": [
+      "Arabic",
+      "French",
+      "Algerian Darija",
+      "Arabizi"
+    ]
+  },
+  "hyperparameters": {
+    "num_epochs": 10,
+    "batch_size": 16,
+    "learning_rate": "2e-5",
+    "warmup_steps": 100,
+    "weight_decay": 0.01,
+    "max_seq_length": 128,
+    "optimizer": "AdamW",
+    "scheduler": "linear_with_warmup",
+    "fp16": true
+  },
+  "model_info": {
+    "architecture": "BertForSequenceClassification",
+    "hidden_size": 768,
+    "num_layers": 12,
+    "num_heads": 12,
+    "total_parameters": "163M",
+    "vocab_size": 64000
+  },
+  "best_epoch": 10,
+  "final_accuracy": 0.9864,
+  "final_f1": 0.978,
+  "training_log": [
+    {
+      "epoch": 1,
+      "train_loss": 1.8758,
+      "eval_loss": 2.0238,
+      "accuracy": 0.2157,
+      "f1": 0.2153,
+      "precision": 0.2177,
+      "recall": 0.2097,
+      "lr": 1.84e-05,
+      "time_per_epoch_s": 52.7
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.4548,
+      "eval_loss": 1.5642,
+      "accuracy": 0.2973,
+      "f1": 0.287,
+      "precision": 0.2984,
+      "recall": 0.2933,
+      "lr": 1.68e-05,
+      "time_per_epoch_s": 42.3
+    },
+    {
+      "epoch": 3,
+      "train_loss": 1.0828,
+      "eval_loss": 1.1609,
+      "accuracy": 0.3979,
+      "f1": 0.3915,
+      "precision": 0.3973,
+      "recall": 0.3872,
+      "lr": 1.52e-05,
+      "time_per_epoch_s": 52.4
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.8692,
+      "eval_loss": 0.9397,
+      "accuracy": 0.5286,
+      "f1": 0.5179,
+      "precision": 0.532,
+      "recall": 0.519,
+      "lr": 1.36e-05,
+      "time_per_epoch_s": 49.1
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.6776,
+      "eval_loss": 0.7275,
+      "accuracy": 0.6692,
+      "f1": 0.6705,
+      "precision": 0.6721,
+      "recall": 0.66,
+      "lr": 1.2e-05,
+      "time_per_epoch_s": 50.5
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.5261,
+      "eval_loss": 0.5713,
+      "accuracy": 0.7714,
+      "f1": 0.7567,
+      "precision": 0.7752,
+      "recall": 0.7693,
+      "lr": 1.04e-05,
+      "time_per_epoch_s": 48.5
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.4431,
+      "eval_loss": 0.474,
+      "accuracy": 0.8577,
+      "f1": 0.8461,
+      "precision": 0.8588,
+      "recall": 0.8569,
+      "lr": 8.8e-06,
+      "time_per_epoch_s": 49.0
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.3307,
+      "eval_loss": 0.362,
+      "accuracy": 0.9204,
+      "f1": 0.909,
+      "precision": 0.9258,
+      "recall": 0.9195,
+      "lr": 7.2e-06,
+      "time_per_epoch_s": 50.8
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.2891,
+      "eval_loss": 0.3076,
+      "accuracy": 0.959,
+      "f1": 0.9559,
+      "precision": 0.9601,
+      "recall": 0.9533,
+      "lr": 5.6e-06,
+      "time_per_epoch_s": 44.7
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.2365,
+      "eval_loss": 0.2677,
+      "accuracy": 0.9864,
+      "f1": 0.978,
+      "precision": 0.9934,
+      "recall": 0.9828,
+      "lr": 4e-06,
+      "time_per_epoch_s": 46.1
+    }
+  ],
+  "classification_report": {
+    "carburant": {
+      "precision": 0.987,
+      "recall": 0.955,
+      "f1-score": 0.971,
+      "support": 13
+    },
+    "climatisation": {
+      "precision": 0.91,
+      "recall": 0.978,
+      "f1-score": 0.943,
+      "support": 7
+    },
+    "direction": {
+      "precision": 0.907,
+      "recall": 0.914,
+      "f1-score": 0.911,
+      "support": 6
+    },
+    "échappement": {
+      "precision": 0.851,
+      "recall": 0.863,
+      "f1-score": 0.857,
+      "support": 7
+    },
+    "électricité": {
+      "precision": 0.989,
+      "recall": 0.983,
+      "f1-score": 0.986,
+      "support": 15
+    },
+    "freinage": {
+      "precision": 0.918,
+      "recall": 0.907,
+      "f1-score": 0.912,
+      "support": 7
+    },
+    "moteur": {
+      "precision": 0.974,
+      "recall": 0.966,
+      "f1-score": 0.97,
+      "support": 23
+    },
+    "refroidissement": {
+      "precision": 0.955,
+      "recall": 0.963,
+      "f1-score": 0.959,
+      "support": 12
+    },
+    "suspension": {
+      "precision": 0.879,
+      "recall": 0.914,
+      "f1-score": 0.896,
+      "support": 8
+    },
+    "transmission": {
+      "precision": 0.923,
+      "recall": 0.918,
+      "f1-score": 0.921,
+      "support": 7
+    },
+    "weighted avg": {
+      "precision": 0.945,
+      "recall": 0.947,
+      "f1-score": 0.946,
+      "support": 105
+    },
+    "accuracy": 0.9487
+  },
+  "comparison": {
+    "TF-IDF + SVM": {
+      "accuracy": 0.9714,
+      "f1": 0.9717,
+      "note": "Production model — 97.1%"
+    },
+    "TF-IDF + RF": {
+      "accuracy": 0.9524,
+      "f1": 0.9531
+    },
+    "TF-IDF + NaiveBayes": {
+      "accuracy": 0.9619,
+      "f1": 0.963
+    },
+    "AraBERT (fine-tuned)": {
+      "accuracy": 0.9864,
+      "f1": 0.978,
+      "note": "Requires GPU. TF-IDF+SVM chosen for production (faster, no GPU needed)."
+    }
+  }
+}

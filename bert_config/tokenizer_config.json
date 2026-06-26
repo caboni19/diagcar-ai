@@ -1,0 +1,13 @@
+{
+  "model_max_length": 128,
+  "tokenizer_class": "BertTokenizer",
+  "do_lower_case": false,
+  "do_basic_tokenize": true,
+  "never_split": ["[UNK]","[SEP]","[PAD]","[CLS]","[MASK]"],
+  "unk_token": "[UNK]",
+  "sep_token": "[SEP]",
+  "pad_token": "[PAD]",
+  "cls_token": "[CLS]",
+  "mask_token": "[MASK]",
+  "note": "AraBERT tokenizer config for DiagCar AI future integration"
+}
